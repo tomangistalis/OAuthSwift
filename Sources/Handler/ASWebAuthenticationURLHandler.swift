@@ -6,7 +6,7 @@
 //  Copyright © 2019 Dongri Jin, Marchand Eric. All rights reserved.
 //
 
-#if targetEnvironment(macCatalyst) || os(iOS)
+#if targetEnvironment(macCatalyst) || os(iOS) || os(visionOS)
 
 import AuthenticationServices
 import Foundation
@@ -37,11 +37,15 @@ open class ASWebAuthenticationURLHandler: OAuthSwiftURLHandlerType {
                     let urlString = "\(self.callbackUrlScheme):?error=\(msg ?? "UNKNOWN")&error_domain=\(errorDomain)&error_code=\(errorCode)"
                     let url = URL(string: urlString)!
                     #if !OAUTH_APP_EXTENSIONS
-                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                    DispatchQueue.main.async {
+                        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                    }
                     #endif
                 } else if let successURL = callback {
                     #if !OAUTH_APP_EXTENSIONS
-                    UIApplication.shared.open(successURL, options: [:], completionHandler: nil)
+                    DispatchQueue.main.async {
+                        UIApplication.shared.open(successURL, options: [:], completionHandler: nil)
+                    }
                     #endif
                 }
         })

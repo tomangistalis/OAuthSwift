@@ -6,7 +6,7 @@
 //  Copyright © 2015 Dongri Jin. All rights reserved.
 //
 
-#if os(iOS) || os(tvOS)
+#if canImport(UIKit)
     import UIKit
 
     extension UIApplication {
@@ -33,7 +33,7 @@
             if #available(iOS 13.0, tvOS 13.0, *) {
                 return self.topWindowScene?.windows.first
             } else {
-                return self.keyWindow
+                return UIApplication.shared.windows.filter {$0.isKeyWindow}.first
             }
         }
 
